@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "plugins": [
+    {
+      "id": "app.roleradar.Apify",
+      "name": "RoleRadar Apify",
+      "publisher": "RoleRadar",
+      "summary": "Job sources that run on your own Apify account.",
+      "details": "Choose Apify actors to search for you; results arrive in your sweeps. Runs and costs are on your Apify account.",
+      "version": "1.0",
+      "page": "https://roleradar.app/plugins.html#apify",
+      "requiresPro": true
+    }
+  ]
+}
