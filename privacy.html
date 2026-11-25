@@ -15,7 +15,7 @@
 </header>
 <main>
 <h1>Privacy Policy</h1>
-<p class="meta">Effective November 23, 2026. Applies to RoleRadar for Mac, its Safari extension, and the RoleRadar Apify plugin.</p>
+<p class="meta">Effective November 25, 2026. Applies to RoleRadar for Mac, its Safari extension, and the RoleRadar Apify plugin.</p>
 
 <div class="panel">
 <p><b>The short version:</b> RoleRadar doesn't collect your data. There's no account, no analytics, no advertising and no tracking.
@@ -29,6 +29,8 @@ it. RoleRadar only contacts the job sources and services described below, so it 
 <li><b>Fit reads and wording suggestions</b> run on your Mac, using Apple's on-device model or, if you choose one in Settings, an open
 model downloaded to your Mac. Your résumé is never sent to an AI service.</li>
 <li><b>Your settings</b> (search terms, places, companies, sources) are stored on your Mac.</li>
+<li><b>Your name and contact details, your résumé form and the skills you add</b> (My Skills) are stored on your Mac and used
+only there, for fit reads, templates and file names.</li>
 <li><b>Notifications</b> are created on your Mac. RoleRadar doesn't use push notification servers.</li>
 </ul>
 
@@ -47,6 +49,7 @@ including your IP address, and their own privacy policies apply.</p>
 <tr><td>Choosing an open AI model in Settings (optional)</td><td>Hugging Face</td><td>A one-time download of the model (about 3 GB)</td></tr>
 <tr><td>Saving documents to iCloud Drive (optional)</td><td>Apple (iCloud)</td><td>The résumés and cover letters you export, under Apple's iCloud terms</td></tr>
 <tr><td>Opening Settings ▸ Plugins</td><td>roleradar.app</td><td>A request for the list of available plugins (nothing about you is sent)</td></tr>
+<tr><td>Opening Settings ▸ Plugins</td><td>Safari, on your Mac</td><td>Whether RoleRadar's Safari extension is turned on (nothing leaves your Mac)</td></tr>
 <tr><td>Buying or restoring RoleRadar Pro</td><td>Apple (App Store)</td>
     <td>Apple handles the purchase. RoleRadar asks the App Store whether Pro is owned and never sees your payment details.</td></tr>
 </table>
@@ -67,12 +70,13 @@ Apple may share anonymous crash reports with the developer. You control that set
 
 <h2>Plugins and RoleRadar Apify</h2>
 <p>Plugins are separate apps that add job sources needing an account. RoleRadar uses a plugin only after you turn it on in
-<b>Settings ▸ Plugins</b>. When it does, RoleRadar gives the plugin your search terms, places, remote preference, excluded companies and
-search filters. It never gives a plugin your résumé, cover letters or notes.</p>
+<b>Settings ▸ Plugins</b>. When it does, RoleRadar gives the plugin your search terms, places, remote preference, experience level,
+excluded companies and search filters. It never gives a plugin your résumé, cover letters, notes or the skills you add.</p>
 <p><b>RoleRadar Apify</b>, available separately from roleradar.app, runs the searches you choose on
 <a href="https://apify.com">Apify</a> using your own Apify account:</p>
 <ul>
-<li>It sends Apify your search terms, places and the settings of the Apify actors you choose. Results come back to your Mac.</li>
+<li>It sends Apify your search terms, places, the settings of the Apify actors you choose (for LinkedIn, also any title words you
+choose to skip), and your experience level when you choose to skip junior titles. Results come back to your Mac.</li>
 <li>Your Apify API token is stored in the plugin's own keychain on your Mac and is sent only to Apify. RoleRadar itself never sees it.</li>
 <li>Runs happen on your Apify account, under <a href="https://apify.com/privacy-policy">Apify's privacy policy</a> and terms, and
 any costs are charged by Apify to that account. You're responsible for using the actors you choose in line with the terms of the sites they search.</li>
