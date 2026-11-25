@@ -81,7 +81,7 @@
 <main>
 <h1>Beta Checklist</h1>
 <p class="lede">Use RoleRadar as if you'd never seen it. Work down the list, mark each step <b>Works</b>, <b>Problem</b> or <b>Skipped</b>, and note what you saw, especially anything confusing, slow or surprising.</p>
-<p class="meta">Your answers stay in this browser as you go. <b>Print</b> at the bottom prints them (or a blank copy to fill in by hand).</p>
+<p class="meta">Your answers stay in this browser as you go (nothing is sent until you choose to). When you're done, use <b>Email my results</b> or <b>Print</b> at the bottom.</p>
 
 <div class="panel">
   <div class="tester">
@@ -109,9 +109,13 @@
 </label>
 
 <div class="send">
-  <button class="btn" id="printBtn" type="button">Print</button>
-  <span id="sendNote">Prints your answers so far, or a blank copy to fill in by hand.</span>
+  <a class="btn" id="emailBtn" href="mailto:support@roleradar.app">Email my results</a>
+  <button class="btn secondary" id="copyBtn" type="button">Copy my results</button>
+  <button class="btn secondary" id="downloadBtn" type="button">Download</button>
+  <button class="btn secondary" id="printBtn" type="button">Print</button>
+  <span id="sendNote"></span>
 </div>
+<p class="meta">Results go to support@roleradar.app. Print gives your answers so far, or a blank copy to fill in by hand.</p>
 </main>
 <footer class="site">
   <span>© 2026 RoleRadar</span><a href="plugins.html">Plugins</a><a href="privacy.html">Privacy</a><a href="support.html">Support</a>
@@ -199,7 +203,7 @@ function render() {
       body.append(choices);
       const ta = el("textarea", { id: "note-" + s.id, rows: "1", placeholder: "What you saw (optional)", "aria-label": s.t + " notes" });
       ta.value = state.items[s.id]?.note || "";
-      ta.addEventListener("input", () => { state.items[s.id] = Object.assign(state.items[s.id] || {}, { note: ta.value }); keep(); });
+      ta.addEventListener("input", () => { state.items[s.id] = Object.assign(state.items[s.id] || {}, { note: ta.value }); keep(); updateLinks(); });
       body.append(ta);
       // Printed: tick boxes (the chosen one filled) and the note, or lines to write on.
       const ticks = el("div", { class: "ticks print-only" });
@@ -228,14 +232,41 @@ function progress() {
     const sp = el("span"); sp.style.width = (c[v] / ALL.length * 100) + "%"; sp.style.background = color; m.append(sp);
   }
   m.setAttribute("aria-label", `${done} of ${ALL.length} steps done, ${c.problem} problems`);
+  if (typeof updateLinks === "function") updateLinks();
 }
 
 
 for (const k of ["tester", "mac", "build", "overall"]) {
   const f = document.getElementById(k);
   f.value = state[k] || "";
-  f.addEventListener("input", () => { state[k] = f.value; keep(); });
+  f.addEventListener("input", () => { state[k] = f.value; keep(); updateLinks(); });
 }
+function summary() {
+  const lines = [`RoleRadar beta: ${state.tester || "tester"} · ${state.mac || "Mac?"} · build ${state.build || "?"}`];
+  for (const g of GROUPS) {
+    lines.push("", g.title.toUpperCase());
+    for (const s of g.steps) {
+      const it = state.items[s.id] || {};
+      lines.push(`- ${s.t}: ${it.status ? LABELS[it.status] : "not done"}${it.note ? " — " + it.note : ""}`);
+    }
+  }
+  if (state.overall) lines.push("", "OVERALL", state.overall);
+  return lines.join("\n");
+}
+function updateLinks() {
+  const subject = `RoleRadar beta results${state.tester ? " — " + state.tester : ""}`;
+  document.getElementById("emailBtn").href = "mailto:support@roleradar.app?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(summary());
+}
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  const note = document.getElementById("sendNote");
+  try { await navigator.clipboard.writeText(summary()); note.textContent = "Copied."; }
+  catch { note.textContent = "Couldn't copy; use Download instead."; }
+});
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const blob = new Blob([summary()], { type: "text/plain" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: `RoleRadar-beta-${(state.tester || "results").replace(/[^A-Za-z0-9-]+/g, "-")}.txt` });
+  document.body.append(a); a.click(); a.remove();
+});
 document.getElementById("printBtn").addEventListener("click", () => { render(); printFields(); window.print(); });
 
 /* The tester's details and overall answer as plain text for printing (inputs don't print well). */
@@ -252,7 +283,7 @@ function printFields() {
   }
 }
 window.addEventListener("beforeprint", () => { render(); printFields(); });
-render();
+render(); updateLinks();
 </script>
 </body>
 </html>
