@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beta Checklist · RoleRadar</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="What to try in RoleRadar's TestFlight beta, as someone using it for the first time.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  :root { --pass: #237a4b; --problem: #b4441f; --skip: #7b7f86; }
+  @media (prefers-color-scheme: dark) { :root { --pass: #5ccb8c; --problem: #f0875f; --skip: #a3a7ae; } }
+  .tester { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  label.field { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+  input[type=text], textarea { font: inherit; font-size: 15px; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; width: 100%; }
+  textarea { resize: vertical; min-height: 38px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .status { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 14px; color: var(--muted); margin-top: 14px; }
+  .meter { flex: 1 1 220px; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; display: flex; }
+  .meter span { height: 100%; }
+  .group-head { display: flex; align-items: baseline; gap: 10px; }
+  .group-head .count { margin-left: auto; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .steps { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 4px 18px; }
+  .step { display: grid; grid-template-columns: 2.2rem 1fr; gap: 4px 10px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .step:first-child { border-top: 0; }
+  .num { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .body { min-width: 0; display: grid; gap: 8px; }
+  .body h3 { margin: 0; font-size: 16px; }
+  .how { margin: 0; font-size: 15px; color: var(--muted); }
+  .how b { color: var(--fg); font-weight: 500; }
+  .expect { margin: 0; font-size: 14px; }
+  .expect::before { content: "Expect: "; font-weight: 600; color: var(--accent); }
+  .choices { display: flex; flex-wrap: wrap; gap: 6px; }
+  .choice { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 7px; padding: 4px 12px; cursor: pointer; }
+  .choice[aria-pressed="true"][data-v="pass"] { background: var(--pass); border-color: var(--pass); color: #fff; }
+  .choice[aria-pressed="true"][data-v="problem"] { background: var(--problem); border-color: var(--problem); color: #fff; }
+  .choice[aria-pressed="true"][data-v="skip"] { background: var(--skip); border-color: var(--skip); color: #fff; }
+  .send { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
+  .btn { font: inherit; font-size: 15px; font-weight: 500; border-radius: 8px; padding: 7px 14px; cursor: pointer; border: 1px solid var(--accent); background: var(--accent); color: #fff; text-decoration: none; }
+  .btn.secondary { background: transparent; color: var(--accent); }
+  .btn:hover { text-decoration: none; }
+  #sendNote { font-size: 14px; color: var(--muted); }
+  @media (max-width: 480px) { .step { grid-template-columns: 1.6rem 1fr; } }
+</style>
+</head>
+<body>
+<header class="site">
+  <a class="brand" href="./"><img src="icon.png" alt="">RoleRadar</a>
+  <nav><a href="./">Home</a><a href="plugins.html">Plugins</a><a href="privacy.html">Privacy</a><a href="support.html">Support</a></nav>
+</header>
+<main>
+<h1>Beta Checklist</h1>
+<p class="lede">Use RoleRadar as if you'd never seen it. Work down the list, mark each step <b>Works</b>, <b>Problem</b> or <b>Skipped</b>, and note what you saw, especially anything confusing, slow or surprising.</p>
+<p class="meta">Your answers stay in this browser as you go (nothing is sent until you choose to send it). When you're done, use <b>Email my results</b> at the bottom.</p>
+
+<div class="panel">
+  <div class="tester">
+    <label class="field" for="tester">Your name <input id="tester" type="text" autocomplete="name" placeholder="e.g. Sam"></label>
+    <label class="field" for="mac">Your Mac and macOS <input id="mac" type="text" placeholder="e.g. MacBook Air M2, macOS 26.1"></label>
+    <label class="field" for="build">RoleRadar build <input id="build" type="text" placeholder="RoleRadar ▸ About, e.g. 0.1 (3)"></label>
+  </div>
+  <div class="status">
+    <div class="meter" id="meter" role="img" aria-label="Progress"></div>
+    <span id="progressText">0 done</span>
+  </div>
+</div>
+
+<div id="groups"></div>
+
+<h2>Overall</h2>
+<label class="field" for="overall">What was the most confusing moment? What would you change first?
+  <textarea id="overall" rows="4"></textarea>
+</label>
+
+<div class="send">
+  <a class="btn" id="emailBtn" href="mailto:support@roleradar.app">Email my results</a>
+  <button class="btn secondary" id="copyBtn" type="button">Copy my results</button>
+  <button class="btn secondary" id="downloadBtn" type="button">Download</button>
+  <span id="sendNote"></span>
+</div>
+<p class="meta">Results go to support@roleradar.app. You can also copy them and send them however you like.</p>
+</main>
+<footer class="site">
+  <span>© 2026 RoleRadar</span><a href="plugins.html">Plugins</a><a href="privacy.html">Privacy</a><a href="support.html">Support</a>
+</footer>
+<script>
+const GROUPS = [
+  { id: "install", title: "Install and first launch", steps: [
+    { id: "tf-install", t: "Install from TestFlight", how: "Open the <b>TestFlight</b> email or the TestFlight app, choose <b>Accept</b>, then <b>Install</b> next to RoleRadar.", expect: "RoleRadar appears in Applications and opens without a warning." },
+    { id: "first-look", t: "First look", how: "Open RoleRadar. Before clicking anything, look at the window for ten seconds.", expect: "It's clear what RoleRadar is for and what to do first. Write down what you think the first step is." },
+    { id: "welcome", t: "Welcome and getting started", how: "Follow whatever RoleRadar suggests first (a welcome window or a getting-started list, if there is one).", expect: "It's short, you can skip it, and it points you to importing your résumé." },
+  ]},
+  { id: "setup", title: "Set up your search", steps: [
+    { id: "import", t: "Import your résumé", how: "<b>RoleRadar ▸ Settings ▸ Résumé ▸ Import Résumé…</b>, then choose your résumé (PDF or Word).", expect: "A Résumé window opens with your jobs, dates and bullets filled in." },
+    { id: "review", t: "Review the résumé form", how: "In the Résumé window, check each job's title, company and dates. Fix anything wrong, add a bullet with <b>Add Bullet</b>, then <b>Save</b>.", expect: "What it read is mostly right; any job shown in orange needs a title. Note anything it got wrong." },
+    { id: "contact", t: "Name and contact details", how: "<b>Settings ▸ Résumé ▸ Name and Contact…</b>: check them and click <b>Confirm</b>.", expect: "Name, email, phone and city are right; the status says “checked”." },
+    { id: "terms", t: "Search terms", how: "<b>Settings ▸ Search</b>: look at the suggested terms, remove any that don't fit, add one of your own.", expect: "The suggestions match the kind of work you want." },
+    { id: "places", t: "Where you'll work", how: "<b>Settings ▸ Location</b>: add your town and a distance. Try <b>Current Location</b> once.", expect: "macOS asks for location only when you click Current Location; your town appears." },
+    { id: "company", t: "Add a company", how: "<b>Settings ▸ Companies ▸ Add a Company</b>: type an employer you'd like to work for.", expect: "RoleRadar finds its job board, or says clearly that it couldn't." },
+  ]},
+  { id: "sweep", title: "Find and sort roles", steps: [
+    { id: "sweep-now", t: "First sweep", how: "Click <b>Sweep Now</b> in the toolbar.", expect: "Roles start appearing within a few seconds; the sweep finishes within a couple of minutes." },
+    { id: "fit", t: "Read a role", how: "Click a role near the top. Read its summary and fit (Match, Reach, Below level…).", expect: "You understand why it was rated the way it was." },
+    { id: "triage", t: "Make a call", how: "Mark one role <b>Interested</b> and one <b>Not for Me</b> (the toolbar, or the I and N keys).", expect: "They move to the right folders in the sidebar." },
+    { id: "posting", t: "Open the posting", how: "On an Interested role, choose <b>Open Posting</b>, then try <b>Open in Safari</b>.", expect: "The job page opens; nothing asks you to sign in unexpectedly." },
+  ]},
+  { id: "apply", title: "Apply for a role", steps: [
+    { id: "apply-open", t: "Start an application", how: "On the Interested role, click <b>Apply</b>.", expect: "Your résumé opens on a page, laid out cleanly." },
+    { id: "suggest", t: "Tailor with suggestions", how: "Click <b>Suggest</b>. Try <b>Use This</b> on one suggestion and <b>Move Up</b> on another.", expect: "Each change happens in the résumé; Move Up keeps the line inside its job." },
+    { id: "template", t: "Try the templates", how: "<b>Template</b> in the toolbar: try Classic, Modern and Compact.", expect: "Each looks tidy; switching doesn't lose or repeat anything." },
+    { id: "writing-tools", t: "Writing Tools", how: "Select a sentence, click <b>Writing Tools</b>, choose <b>Make Concise</b>, then <b>Replace</b>.", expect: "The window stays open; the change can be undone with ⌘Z." },
+    { id: "letter", t: "Cover letter", how: "Switch to <b>Cover Letter</b> and click <b>Draft with AI</b>.", expect: "A sensible letter for this role appears." },
+    { id: "ats", t: "ATS Check", how: "Click <b>ATS Check</b>.", expect: "You understand what it found and what to fix." },
+    { id: "pro", t: "Export and RoleRadar Pro", how: "Click <b>Export</b>. If it offers RoleRadar Pro, buy it (TestFlight purchases are free), then export a PDF.", expect: "The purchase completes; the PDF is named like Lastname_Resume_Company.pdf." },
+    { id: "applied", t: "Mark as applied", how: "Click <b>Mark as Applied</b>, then look at the role in Interested.", expect: "It shows a paper plane and appears in Applied." },
+  ]},
+  { id: "everyday", title: "Everyday use", steps: [
+    { id: "safari", t: "Add a job from Safari", how: "Turn on the RoleRadar extension in <b>Safari ▸ Settings ▸ Extensions</b>, open a job posting on any site, and click the RoleRadar button.", expect: "RoleRadar asks to add it, then opens it selected." },
+    { id: "notify", t: "Notifications", how: "Leave RoleRadar open for a while or run another sweep.", expect: "Notifications, if any, are useful rather than noisy." },
+    { id: "help", t: "Find an answer in Help", how: "<b>Help ▸ RoleRadar Help</b>: look up something you weren't sure about.", expect: "You found the answer." },
+    { id: "relaunch", t: "Quit and reopen", how: "Quit RoleRadar (⌘Q) and open it again.", expect: "Your roles, decisions and drafts are all still there." },
+  ]},
+];
+const ALL = GROUPS.flatMap(g => g.steps);
+const LABELS = { pass: "Works", problem: "Problem", skip: "Skipped" };
+const KEY = "roleradar-beta-checklist";
+let state = { tester: "", mac: "", build: "", overall: "", items: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) state = Object.assign(state, s); } catch {}
+function keep() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} }
+
+function el(tag, attrs = {}, text) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function render() {
+  const root = document.getElementById("groups");
+  root.textContent = "";
+  let n = 0;
+  for (const g of GROUPS) {
+    const head = el("div", { class: "group-head" });
+    head.append(el("h2", {}, g.title));
+    head.append(el("span", { class: "count" }, `${g.steps.filter(s => state.items[s.id]?.status).length}/${g.steps.length}`));
+    root.append(head);
+    const box = el("div", { class: "steps" });
+    for (const s of g.steps) {
+      n += 1;
+      const step = el("div", { class: "step" });
+      step.append(el("div", { class: "num" }, String(n).padStart(2, "0")));
+      const body = el("div", { class: "body" });
+      body.append(el("h3", {}, s.t));
+      const how = el("p", { class: "how" }); how.innerHTML = s.how; body.append(how);  // fixed copy from this page
+      body.append(el("p", { class: "expect" }, s.expect));
+      const choices = el("div", { class: "choices", role: "group", "aria-label": s.t + " result" });
+      for (const v of ["pass", "problem", "skip"]) {
+        const b = el("button", { class: "choice", type: "button", "data-v": v, "aria-pressed": String(state.items[s.id]?.status === v) }, LABELS[v]);
+        b.addEventListener("click", () => {
+          const cur = state.items[s.id] || {};
+          cur.status = cur.status === v ? "" : v;
+          state.items[s.id] = cur; keep(); render();
+        });
+        choices.append(b);
+      }
+      body.append(choices);
+      const ta = el("textarea", { id: "note-" + s.id, rows: "1", placeholder: "What you saw (optional)", "aria-label": s.t + " notes" });
+      ta.value = state.items[s.id]?.note || "";
+      ta.addEventListener("input", () => { state.items[s.id] = Object.assign(state.items[s.id] || {}, { note: ta.value }); keep(); updateLinks(); });
+      body.append(ta);
+      step.append(body); box.append(step);
+    }
+    root.append(box);
+  }
+  progress(); updateLinks();
+}
+
+function progress() {
+  const c = { pass: 0, problem: 0, skip: 0 };
+  for (const s of ALL) { const v = state.items[s.id]?.status; if (v) c[v]++; }
+  const done = c.pass + c.problem + c.skip;
+  document.getElementById("progressText").textContent = `${done} of ${ALL.length} done · ${c.problem} problem${c.problem === 1 ? "" : "s"}`;
+  const m = document.getElementById("meter"); m.textContent = "";
+  for (const [v, color] of [["pass", "var(--pass)"], ["problem", "var(--problem)"], ["skip", "var(--skip)"]]) {
+    const sp = el("span"); sp.style.width = (c[v] / ALL.length * 100) + "%"; sp.style.background = color; m.append(sp);
+  }
+  m.setAttribute("aria-label", `${done} of ${ALL.length} steps done, ${c.problem} problems`);
+}
+
+function summary() {
+  const lines = [`RoleRadar beta: ${state.tester || "tester"} · ${state.mac || "Mac?"} · build ${state.build || "?"}`];
+  for (const g of GROUPS) {
+    lines.push("", g.title.toUpperCase());
+    for (const s of g.steps) {
+      const it = state.items[s.id] || {};
+      lines.push(`- ${s.t}: ${it.status ? LABELS[it.status] : "not done"}${it.note ? " — " + it.note : ""}`);
+    }
+  }
+  if (state.overall) lines.push("", "OVERALL", state.overall);
+  return lines.join("\n");
+}
+
+function updateLinks() {
+  const subject = `RoleRadar beta results${state.tester ? " — " + state.tester : ""}`;
+  document.getElementById("emailBtn").href = "mailto:support@roleradar.app?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(summary());
+}
+
+for (const k of ["tester", "mac", "build", "overall"]) {
+  const f = document.getElementById(k);
+  f.value = state[k] || "";
+  f.addEventListener("input", () => { state[k] = f.value; keep(); updateLinks(); });
+}
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  const note = document.getElementById("sendNote");
+  try { await navigator.clipboard.writeText(summary()); note.textContent = "Copied."; }
+  catch { note.textContent = "Couldn't copy; use Download instead."; }
+});
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const blob = new Blob([summary()], { type: "text/plain" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: `RoleRadar-beta-${(state.tester || "results").replace(/[^A-Za-z0-9-]+/g, "-")}.txt` });
+  document.body.append(a); a.click(); a.remove();
+});
+render();
+</script>
+</body>
+</html>
